@@ -10,20 +10,20 @@ import (
 )
 
 type DB interface {
-	WriteEntry(model.Entry) error
-	ReadAllEntries() (model.EntrySummary, error)
+	WriteEntry(model.GameHistory) error
+	ReadAllEntries() (model.GameHistorySummary, error)
 }
 
 type gormDb struct {
 	db *gorm.DB
 }
 
-func (d *gormDb) WriteEntry(e model.Entry) error {
+func (d *gormDb) WriteEntry(e model.GameHistory) error {
 	return nil
 }
 
-func (d *gormDb) ReadAllEntries() (model.EntrySummary, error) {
-	return model.EntrySummary{}, nil
+func (d *gormDb) ReadAllEntries() (model.GameHistorySummary, error) {
+	return model.GameHistorySummary{}, nil
 }
 
 func NewDb() (DB, error) {
@@ -34,7 +34,7 @@ func NewDb() (DB, error) {
 		return nil, err
 	}
 
-	err = db.AutoMigrate(&model.Entry{})
+	err = db.AutoMigrate(&model.GameHistory{})
 	if err != nil {
 		return nil, err
 	}
