@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Spaceman1701/ludum-dare-50-server/persistence"
+	"github.com/Spaceman1701/ludum-dare-50-server/web"
 )
 
 func main() {
@@ -13,4 +14,10 @@ func main() {
 	}
 
 	fmt.Println(db)
+
+	fmt.Println("successfully connected to db, starting server")
+
+	if err = web.RunServer(":8090"); err != nil {
+		panic(err)
+	}
 }
