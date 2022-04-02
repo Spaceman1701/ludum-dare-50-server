@@ -11,7 +11,7 @@ import (
 
 type DB interface {
 	WriteEntry(model.GameHistory) error
-	ReadAllEntries() (model.GameHistorySummary, error)
+	ReadAllEntries() ([]model.GameHistory, error)
 }
 
 type gormDb struct {
@@ -19,11 +19,13 @@ type gormDb struct {
 }
 
 func (d *gormDb) WriteEntry(e model.GameHistory) error {
-	return nil
+	return d.db.Create(&e).Error
 }
 
-func (d *gormDb) ReadAllEntries() (model.GameHistorySummary, error) {
-	return model.GameHistorySummary{}, nil
+func (d *gormDb) ReadAllEntries() ([]model.GameHistory, error) {
+	history := make([]model.GameHistory, 0)
+	res := d.db.Find(&history)
+	return history, res.Error
 }
 
 func NewDb() (DB, error) {
