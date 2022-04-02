@@ -1,0 +1,11 @@
+{
+    "DeathPos": 120,
+    "TouchedPositions": [
+        {
+            "Pos": 1234
+        },
+        {
+            "Pos": 1234
+        }
+    ] 
+}

@@ -29,7 +29,7 @@ type GameHistory struct {
 	ID uint `gorm:"primaryKey"`
 	//TODO
 	TouchedPositions []TileVisit `gorm:"foreignKey:ID"`
-	DeathLocation    WorldPos
+	DeathPos         WorldPos
 }
 
 type HealingShrine struct {

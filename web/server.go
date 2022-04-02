@@ -20,7 +20,7 @@ func AddEntry(db persistence.DB) handlerFunc {
 			fmt.Fprintf(w, "bad\n")
 			return
 		}
-		fmt.Fprintf(w, "add entry")
+		fmt.Fprintf(w, "%v", history)
 	}
 }
 
@@ -31,7 +31,7 @@ func GetEntrySummary(db persistence.DB) handlerFunc {
 }
 
 func RunServer(addr string, db persistence.DB) error {
-	http.HandleFunc("/add_entry", AddEntry(db))
-	http.HandleFunc("/get_entries", GetEntrySummary(db))
+	http.HandleFunc("/add_history", AddEntry(db))
+	http.HandleFunc("/get_game_state", GetEntrySummary(db))
 	return http.ListenAndServe(addr, nil)
 }
