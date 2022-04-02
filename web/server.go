@@ -21,12 +21,18 @@ func AddEntry(db persistence.DB) handlerFunc {
 			return
 		}
 		fmt.Fprintf(w, "%v", history)
+		db.WriteEntry(history)
 	}
 }
 
 func GetEntrySummary(db persistence.DB) handlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		fmt.Fprintf(w, "get entries")
+		fmt.Fprintf(w, "get entries\n")
+
+		history, _ := db.ReadAllEntries()
+		for i, h := range history {
+			fmt.Fprintf(w, "entry %v: %v\n", i, h)
+		}
 	}
 }
 

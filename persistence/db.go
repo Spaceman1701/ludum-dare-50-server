@@ -36,7 +36,7 @@ func NewDb() (DB, error) {
 		return nil, err
 	}
 
-	err = db.AutoMigrate(&model.GameHistory{})
+	err = db.AutoMigrate(&model.GameHistory{}, &model.TileVisit{})
 	if err != nil {
 		return nil, err
 	}
