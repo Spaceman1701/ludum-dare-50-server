@@ -3,16 +3,14 @@ package main
 import (
 	"fmt"
 
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
+	"github.com/Spaceman1701/ludum-dare-50-server/persistence"
 )
 
 func main() {
-	fmt.Println("starting ld50 server")
-	dsn := "host=localhost user=postgres password=foobar dbname=ld50 port=5432 sslmode=disable TimeZone=America/Denver"
-	_, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := persistence.NewDb()
 	if err != nil {
 		panic(err)
 	}
 
+	fmt.Println(db)
 }
