@@ -13,11 +13,9 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Println(db)
-
 	fmt.Println("successfully connected to db, starting server")
 
-	if err = web.RunServer(":8090"); err != nil {
+	if err = web.RunServer(":8090", db); err != nil {
 		panic(err)
 	}
 }
