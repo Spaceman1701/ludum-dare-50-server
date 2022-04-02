@@ -34,6 +34,11 @@ func NewDb() (DB, error) {
 		return nil, err
 	}
 
+	err = db.AutoMigrate(&model.Entry{})
+	if err != nil {
+		return nil, err
+	}
+
 	return &gormDb{
 		db: db,
 	}, nil
