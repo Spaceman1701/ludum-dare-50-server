@@ -53,3 +53,7 @@ type Shrine struct {
 
 	Contributors []Player `gorm:"many2many:contributors"`
 }
+
+type ShrineList struct {
+	Shrines []Shrine
+}
