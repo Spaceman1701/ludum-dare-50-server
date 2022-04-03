@@ -18,6 +18,15 @@ func getOrCreatePlayer(username string, db *gorm.DB) model.Player {
 	return player
 }
 
+func playerUsedShrine(death model.PlayerDeath, shrine *model.Shrine) bool {
+	for _, id := range death.UsedShrines {
+		if id == shrine.ID {
+			return true
+		}
+	}
+	return false
+}
+
 func RecordPlayerDeath(death model.PlayerDeath, db *gorm.DB) {
 	tx := db.Begin()
 	defer tx.Commit()
@@ -26,10 +35,14 @@ func RecordPlayerDeath(death model.PlayerDeath, db *gorm.DB) {
 	player := getOrCreatePlayer(death.Username, tx)
 	tx.Preload(clause.Associations).Find(&shrines)
 
+	if len(death.UsedShrines) > 0 {
+
+	}
+
 	diedInShrine := false
 	diedInBufferZone := false
 	for _, s := range shrines {
-		if s.IsPointInside(death.Pos) {
+		if !diedInShrine && s.IsPointInside(death.Pos) {
 			contrib := model.ComputeShrineContribution(death, &s)
 			s.Power += contrib
 			if death.Sacrifice {
@@ -37,10 +50,11 @@ func RecordPlayerDeath(death model.PlayerDeath, db *gorm.DB) {
 			}
 			tx.Save(&s)
 			diedInShrine = true
-			break
-		}
-		if s.IsPointInBufferZone(death.Pos) {
+		} else if s.IsPointInBufferZone(death.Pos) {
 			diedInBufferZone = true
+		}
+		if playerUsedShrine(death, &s) {
+			s.Power -= model.ComputeShrineCost(death, &s)
 		}
 	}
 

@@ -94,3 +94,7 @@ func CreateNewPotentialShrine(death PlayerDeath, player Player) Shrine {
 		CreatedBy: player,
 	}
 }
+
+func ComputeShrineCost(death PlayerDeath, shrine *Shrine) int {
+	return 10
+}
