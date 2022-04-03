@@ -1,0 +1,1 @@
+curl -X POST -d @examples/player_death.json localhost:8090/record_death

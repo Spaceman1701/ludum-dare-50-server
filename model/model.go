@@ -8,6 +8,7 @@ const WorldWidth = 256
 const WorldHeight = 256
 
 const ShrineAreaOfEffect = 10
+const ShrineBufferArea = 20
 
 type WorldPosVector struct {
 	X int
@@ -25,7 +26,7 @@ func WorldPosToVector(w WorldPos) WorldPosVector {
 
 type PlayerDeath struct {
 	Pos         WorldPos
-	Usrename    string
+	Username    string
 	Time        time.Time
 	Sacrifice   bool
 	UsedShrines []uint
@@ -54,6 +55,42 @@ type Shrine struct {
 	Contributors []Player `gorm:"many2many:contributors"`
 }
 
+func dist2(a WorldPosVector, b WorldPosVector) int {
+	xDist := a.X - b.X
+	yDist := a.Y - b.Y
+	return xDist*xDist + yDist*yDist
+}
+
+func (s *Shrine) IsPointInBufferZone(pos WorldPos) bool {
+	sVec := WorldPosToVector(s.Pos)
+	pVec := WorldPosToVector(pos)
+	return dist2(sVec, pVec) < (ShrineBufferArea * ShrineBufferArea)
+}
+
+func (s *Shrine) IsPointInside(pos WorldPos) bool {
+	sVec := WorldPosToVector(s.Pos)
+	pVec := WorldPosToVector(pos)
+
+	return dist2(sVec, pVec) < (ShrineAreaOfEffect * ShrineAreaOfEffect)
+}
+
 type ShrineList struct {
 	Shrines []Shrine
+}
+
+func ComputeShrineContribution(death PlayerDeath, shrine *Shrine) int {
+	if death.Sacrifice {
+		return 100
+	} else {
+		return 10
+	}
+}
+
+func CreateNewPotentialShrine(death PlayerDeath, player Player) Shrine {
+	return Shrine{
+		Pos:       death.Pos,
+		Power:     10,
+		State:     Potential,
+		CreatedBy: player,
+	}
 }

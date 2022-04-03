@@ -1,0 +1,1 @@
+curl localhost:8090/get_shrines

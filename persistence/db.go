@@ -9,11 +9,7 @@ import (
 	"github.com/Spaceman1701/ludum-dare-50-server/model"
 )
 
-type DB struct {
-	db *gorm.DB
-}
-
-func NewDb() (*DB, error) {
+func NewDb() (*gorm.DB, error) {
 	fmt.Println("starting ld50 server")
 	dsn := "host=localhost user=postgres password=foobar dbname=ld50 port=5432 sslmode=disable TimeZone=America/Denver"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
@@ -28,7 +24,5 @@ func NewDb() (*DB, error) {
 		return nil, err
 	}
 
-	return &DB{
-		db: db,
-	}, nil
+	return db, nil
 }

@@ -6,12 +6,12 @@ import (
 	"net/http"
 
 	"github.com/Spaceman1701/ludum-dare-50-server/model"
-	"github.com/Spaceman1701/ludum-dare-50-server/persistence"
+	"gorm.io/gorm"
 )
 
 type handlerFunc = func(w http.ResponseWriter, req *http.Request)
 
-func AddEntry(db *persistence.DB) handlerFunc {
+func AddEntry(db *gorm.DB) handlerFunc {
 
 	return func(w http.ResponseWriter, req *http.Request) {
 		var death model.PlayerDeath
@@ -24,7 +24,7 @@ func AddEntry(db *persistence.DB) handlerFunc {
 	}
 }
 
-func GetEntrySummary(db *persistence.DB) handlerFunc {
+func GetEntrySummary(db *gorm.DB) handlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		shrines := FetchAllShrines(db)
 		err := json.NewEncoder(w).Encode(shrines)
@@ -35,7 +35,7 @@ func GetEntrySummary(db *persistence.DB) handlerFunc {
 	}
 }
 
-func RunServer(addr string, db *persistence.DB) error {
+func RunServer(addr string, db *gorm.DB) error {
 	http.HandleFunc("/record_death", AddEntry(db))
 	http.HandleFunc("/get_shrines", GetEntrySummary(db))
 	return http.ListenAndServe(addr, nil)
