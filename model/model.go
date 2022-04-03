@@ -1,48 +1,53 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 const WorldWidth = 256
 const WorldHeight = 256
+
+const ShrineAreaOfEffect = 10
 
 type WorldPosVector struct {
 	X int
 	Y int
 }
 
-type WorldPos uint
+type WorldPos = int
 
-func (w WorldPos) ToVector() WorldPosVector {
+func WorldPosToVector(w WorldPos) WorldPosVector {
 	var vec WorldPosVector
 	vec.X = int(w) % WorldWidth
 	vec.Y = int(w) / WorldWidth
 	return vec
 }
 
-type TileVisit struct {
-	ID   uint     `gorm:"primaryKey"`
-	Pos  WorldPos //row major
-	Time time.Time
+type PlayerDeath struct {
+	Pos      WorldPos
+	Usrename string
+	Time     time.Time
 }
 
-type GameHistory struct {
-	ID uint `gorm:"primaryKey"`
-	//TODO
-	TouchedPositions []TileVisit `gorm:"foreignKey:ID"`
-	DeathPos         WorldPos
+type ShrineState int
+
+const (
+	Potential ShrineState = iota
+	Realized
+)
+
+type Player struct {
+	Username string `gorm:"primaryKey"`
 }
 
-type HealingShrine struct {
-	ID       uint `gorm:"primaryKey"`
-	Location WorldPos
-	Power    int
-}
+type Shrine struct {
+	ID    uint `gorm:"primaryKey"`
+	Pos   WorldPos
+	Power int
+	State ShrineState
 
-type WearMap struct {
-	Amounts []int
-}
+	CreatedByUsername string
+	CreatedBy         Player
 
-type GameState struct {
-	Shrines []HealingShrine
-	Wear    WearMap
+	Contributors []Player `gorm:"many2many:contributors"`
 }
