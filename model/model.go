@@ -1,9 +1,5 @@
 package model
 
-import (
-	"time"
-)
-
 const WorldWidth = 256
 const WorldHeight = 256
 
@@ -27,7 +23,6 @@ func WorldPosToVector(w WorldPos) WorldPosVector {
 type PlayerDeath struct {
 	Pos         WorldPos
 	Username    string
-	Time        time.Time
 	Sacrifice   bool
 	UsedShrines []uint
 }
