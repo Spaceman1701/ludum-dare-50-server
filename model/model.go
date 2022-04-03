@@ -24,9 +24,11 @@ func WorldPosToVector(w WorldPos) WorldPosVector {
 }
 
 type PlayerDeath struct {
-	Pos      WorldPos
-	Usrename string
-	Time     time.Time
+	Pos         WorldPos
+	Usrename    string
+	Time        time.Time
+	Sacrifice   bool
+	UsedShrines []uint
 }
 
 type ShrineState int
