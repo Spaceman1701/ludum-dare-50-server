@@ -2,7 +2,10 @@
     "Shrines": [
         {
             "ID": 1234,
-            "Pos": 5677,
+            "Pos": {
+                "X": 12,
+                "Y": 67
+            },
             "Power": 100,
             "State": 1,
             "CreatedBy": {
