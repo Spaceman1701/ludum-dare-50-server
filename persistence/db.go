@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"fmt"
+	"os"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -10,8 +11,15 @@ import (
 )
 
 func NewDb() (*gorm.DB, error) {
+	password := os.Getenv("POSTGRES_PASSWORD")
+	host := os.Getenv("POSTGRES_HOST")
+	if host == "" {
+		host = "localhost"
+	}
+
 	fmt.Println("starting ld50 server")
-	dsn := "host=localhost user=postgres password=foobar dbname=ld50 port=5432 sslmode=disable TimeZone=America/Denver"
+	dsn := fmt.Sprintf("host=%s user=postgres password=%s dbname=ld50 port=5432 sslmode=disable TimeZone=America/Denver", host, password)
+
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})

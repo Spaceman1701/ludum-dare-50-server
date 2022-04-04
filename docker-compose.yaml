@@ -10,5 +10,16 @@ services:
       - postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+  server:
+    image: golang
+    environment:
+      POSTGRES_HOST: "db"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    volumes:
+      - ./:/server
+    ports:
+      - "8090:8090"
+    command: sh -c "cd /server && go run ."
+
 volumes:
   postgres-data:

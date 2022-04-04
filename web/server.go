@@ -19,8 +19,9 @@ func AddEntry(db *gorm.DB) handlerFunc {
 		if err != nil {
 			fmt.Printf("couldn't parse message\n")
 		}
+		fmt.Printf("recording player death: %v\n", &death)
 		fmt.Fprintf(w, "done")
-		RecordPlayerDeath(death, db)
+		go RecordPlayerDeath(death, db)
 	}
 }
 

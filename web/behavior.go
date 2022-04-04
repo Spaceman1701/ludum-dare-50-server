@@ -1,6 +1,8 @@
 package web
 
 import (
+	"fmt"
+
 	"github.com/Spaceman1701/ludum-dare-50-server/model"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -29,7 +31,10 @@ func playerUsedShrine(death model.PlayerDeath, shrine *model.Shrine) bool {
 
 func RecordPlayerDeath(death model.PlayerDeath, db *gorm.DB) {
 	tx := db.Begin()
-	defer tx.Commit()
+	defer func() {
+		tx.Commit()
+		fmt.Println("committed update to database")
+	}()
 
 	shrines := make([]model.Shrine, 0)
 	player := getOrCreatePlayer(death.Username, tx)
