@@ -14,6 +14,7 @@ type handlerFunc = func(w http.ResponseWriter, req *http.Request)
 func AddEntry(db *gorm.DB, shrineUpdates chan model.PlayerDeath) handlerFunc {
 
 	return func(w http.ResponseWriter, req *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		var death model.PlayerDeath
 		err := json.NewDecoder(req.Body).Decode(&death)
 		if err != nil {
@@ -27,6 +28,7 @@ func AddEntry(db *gorm.DB, shrineUpdates chan model.PlayerDeath) handlerFunc {
 
 func GetEntrySummary(db *gorm.DB) handlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
 		shrines := FetchAllShrines(db)
 		err := json.NewEncoder(w).Encode(shrines)
 		if err != nil {
