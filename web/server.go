@@ -11,7 +11,7 @@ import (
 
 type handlerFunc = func(w http.ResponseWriter, req *http.Request)
 
-func AddEntry(db *gorm.DB) handlerFunc {
+func AddEntry(db *gorm.DB, shrineUpdates chan model.PlayerDeath) handlerFunc {
 
 	return func(w http.ResponseWriter, req *http.Request) {
 		var death model.PlayerDeath
@@ -21,7 +21,7 @@ func AddEntry(db *gorm.DB) handlerFunc {
 		}
 		fmt.Printf("recording player death: %v\n", &death)
 		fmt.Fprintf(w, "done")
-		go RecordPlayerDeath(death, db)
+		shrineUpdates <- death
 	}
 }
 
@@ -36,8 +36,8 @@ func GetEntrySummary(db *gorm.DB) handlerFunc {
 	}
 }
 
-func RunServer(addr string, db *gorm.DB) error {
-	http.HandleFunc("/record_death", AddEntry(db))
+func RunServer(addr string, db *gorm.DB, shrineUpdates chan model.PlayerDeath) error {
+	http.HandleFunc("/record_death", AddEntry(db, shrineUpdates))
 	http.HandleFunc("/get_shrines", GetEntrySummary(db))
 	return http.ListenAndServe(addr, nil)
 }
