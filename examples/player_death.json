@@ -1,11 +1,11 @@
 {
     "Username": "restitux",
     "Pos": {
-        "X": 0,
+        "X": 15,
         "Y": 0
     },
     "Sacrifice": false,
     "UsedShrines": [
-        1, 2, 10, 56
+       
     ]
 }

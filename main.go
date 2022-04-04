@@ -9,6 +9,8 @@ import (
 )
 
 func main() {
+	fmt.Printf("CONFIG LOADED:\n")
+	fmt.Printf("%+#v\n", model.GetConfig())
 	db, err := persistence.NewDb()
 	if err != nil {
 		panic(err)

@@ -1,0 +1,12 @@
+
+shrine:
+    radius: 10 # radius of shrine AOE
+    buffer: 20 # buffer radius where other shrines cannot form
+    baseSacrificeContrib: 95 # power contributed by player sacrifice
+    baseDeathContrib: 10 # power contributed by player death
+    upgradeThreshold: 100 # power threshold for potential shrine to be upgraded 
+    destroyThreshold: 0 # power threshold for shrine to be destroyed
+    declineRate: 1 # rate of power decline for potential shrine
+    spawnPower: 10 # power of a shrine at inital spawn
+    usageCost: 10 # power used by a player healing a the shrine
+

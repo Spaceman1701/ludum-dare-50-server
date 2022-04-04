@@ -43,17 +43,15 @@ func handleShrineInteraction(death model.PlayerDeath, shrine *model.Shrine, play
 
 	if !diedInShrine && shrine.State == model.Potential {
 		//potential shrines decay if not contributed to
-		shrine.Power -= 1
+		shrine.Power -= model.GetConfig().Shrine.DeclineRate
 
 		res.shrineModified = true
 	}
 
 	if res.shrineModified {
-		if shrine.Power < 0 {
+		if shrine.Power < model.GetConfig().Shrine.DestroyThreshold {
 			res.shouldDeleteShrine = true
-		} else if shrine.Power < 100 {
-			shrine.State = model.Potential
-		} else {
+		} else if shrine.State == model.Potential && shrine.Power >= model.GetConfig().Shrine.UpgradeThreshold {
 			shrine.State = model.Realized
 		}
 	}

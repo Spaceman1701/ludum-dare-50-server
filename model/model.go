@@ -45,11 +45,13 @@ func dist2(a Vec2, b Vec2) int {
 }
 
 func (s *Shrine) IsPointInBufferZone(pos Vec2) bool {
-	return dist2(s.Pos, pos) < (ShrineBufferArea * ShrineBufferArea)
+	buffer := GetConfig().Shrine.Buffer
+	return dist2(s.Pos, pos) < (buffer * buffer)
 }
 
 func (s *Shrine) IsPointInside(pos Vec2) bool {
-	return dist2(s.Pos, pos) < (ShrineAreaOfEffect * ShrineAreaOfEffect)
+	aoe := GetConfig().Shrine.Radius
+	return dist2(s.Pos, pos) < (aoe * aoe)
 }
 
 type ShrineList struct {
@@ -58,21 +60,21 @@ type ShrineList struct {
 
 func ComputeShrineContribution(death PlayerDeath, shrine *Shrine) int {
 	if death.Sacrifice {
-		return 100
+		return GetConfig().Shrine.BaseSacrificeContrib
 	} else {
-		return 10
+		return GetConfig().Shrine.BaseDeathContrib
 	}
 }
 
 func CreateNewPotentialShrine(death PlayerDeath, player Player) Shrine {
 	return Shrine{
 		Pos:       death.Pos,
-		Power:     10,
+		Power:     GetConfig().Shrine.SpawnPower,
 		State:     Potential,
 		CreatedBy: player,
 	}
 }
 
 func ComputeShrineCost(death PlayerDeath, shrine *Shrine) int {
-	return 10
+	return GetConfig().Shrine.UsageCost
 }
